@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA1B359F23949CE100C06F4C /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1B359E23949CE100C06F4C /* PreviewView.swift */; };
 		EAD9976F239467550023555D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD9976E239467550023555D /* AppDelegate.swift */; };
 		EAD99771239467550023555D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD99770239467550023555D /* ViewController.swift */; };
 		EAD99774239467550023555D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAD99772239467550023555D /* Main.storyboard */; };
@@ -34,7 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		EAD9976B239467550023555D /* Camera Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Camera Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA1B359E23949CE100C06F4C /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		EAD9976B239467550023555D /* RAW Camera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RAW Camera.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD9976E239467550023555D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAD99770239467550023555D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EAD99773239467550023555D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -87,7 +89,7 @@
 		EAD9976C239467550023555D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EAD9976B239467550023555D /* Camera Test.app */,
+				EAD9976B239467550023555D /* RAW Camera.app */,
 				EAD9977F239467570023555D /* Camera TestTests.xctest */,
 				EAD9978A239467570023555D /* Camera TestUITests.xctest */,
 			);
@@ -103,6 +105,7 @@
 				EAD99775239467560023555D /* Assets.xcassets */,
 				EAD99777239467560023555D /* LaunchScreen.storyboard */,
 				EAD9977A239467560023555D /* Info.plist */,
+				EA1B359E23949CE100C06F4C /* PreviewView.swift */,
 			);
 			path = "Camera Test";
 			sourceTree = "<group>";
@@ -142,7 +145,7 @@
 			);
 			name = "Camera Test";
 			productName = "Camera Test";
-			productReference = EAD9976B239467550023555D /* Camera Test.app */;
+			productReference = EAD9976B239467550023555D /* RAW Camera.app */;
 			productType = "com.apple.product-type.application";
 		};
 		EAD9977E239467570023555D /* Camera TestTests */ = {
@@ -258,6 +261,7 @@
 			files = (
 				EAD99771239467550023555D /* ViewController.swift in Sources */,
 				EAD9976F239467550023555D /* AppDelegate.swift in Sources */,
+				EA1B359F23949CE100C06F4C /* PreviewView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +367,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -418,7 +422,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -435,12 +439,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HM4NKPRA84;
 				INFOPLIST_FILE = "Camera Test/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "tony-zhang.Camera-Test";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "RAW Camera";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -453,12 +458,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HM4NKPRA84;
 				INFOPLIST_FILE = "Camera Test/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "tony-zhang.Camera-Test";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "RAW Camera";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
