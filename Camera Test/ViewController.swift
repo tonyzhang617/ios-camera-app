@@ -15,6 +15,9 @@ class ViewController: UIViewController {
     private let session = AVCaptureSession()
     private let photoOutput = AVCapturePhotoOutput()
     
+    var rawImageFileURLList: [URL?] = []
+    var compressedFileDataList: [Data?] = []
+    
     var rawImageFileURL: URL?
     var compressedFileData: Data?
     
@@ -41,13 +44,13 @@ class ViewController: UIViewController {
 
         session.startRunning()
         
-        do {
-            try videoDevice?.lockForConfiguration()
-            videoDevice?.setExposureModeCustom(duration: CMTimeMake(value: 1, timescale: 1), iso: 24.0, completionHandler: nil)
-            videoDevice?.unlockForConfiguration()
-        } catch {
-            
-        }
+//        do {
+//            try videoDevice?.lockForConfiguration()
+//            videoDevice?.setExposureModeCustom(duration: CMTimeMake(value: 1, timescale: 1), iso: 24.0, completionHandler: nil)
+//            videoDevice?.unlockForConfiguration()
+//        } catch {
+//            
+//        }
     }
     
     override func viewDidLoad() {
@@ -74,9 +77,18 @@ class ViewController: UIViewController {
     }
     
     @objc func onCapture(_: UIButton) {
+        let exposureValues: [Float] = [-2, 0, +2]
+        self.rawImageFileURLList = Array(repeating: nil, count: exposureValues.count)
+        self.compressedFileDataList = Array(repeating: nil, count: exposureValues.count)
+        let makeAutoExposureSettings = AVCaptureAutoExposureBracketedStillImageSettings.autoExposureSettings(exposureTargetBias:)
+        let exposureSettings = exposureValues.map(makeAutoExposureSettings)
+
         guard let availableRawFormat = self.photoOutput.availableRawPhotoPixelFormatTypes.first else { return }
-        let photoSettings = AVCapturePhotoSettings(rawPixelFormatType: availableRawFormat,
-                                                   processedFormat: [AVVideoCodecKey : AVVideoCodecType.hevc])
+        let photoSettings = AVCapturePhotoBracketSettings(
+            rawPixelFormatType: availableRawFormat,
+            processedFormat: [AVVideoCodecKey : AVVideoCodecType.hevc],
+            bracketedSettings: exposureSettings
+        )
         self.photoOutput.capturePhoto(with: photoSettings, delegate: self)
     }
 }
@@ -91,33 +103,40 @@ extension ViewController: AVCapturePhotoCaptureDelegate {
             let dngFileURL = self.makeUniqueTempFileURL(extension: "dng")
             do {
                 try photo.fileDataRepresentation()!.write(to: dngFileURL)
-                self.rawImageFileURL = dngFileURL
+                self.rawImageFileURLList[photo.sequenceCount - 1] = dngFileURL
             } catch {
                 fatalError("couldn't write DNG file to URL")
             }
         } else {
-            self.compressedFileData = photo.fileDataRepresentation()!
+            self.compressedFileDataList[photo.sequenceCount - 1] = photo.fileDataRepresentation()!
         }
     }
     
     // After both RAW and compressed versions are delivered, add them to the Photos Library.
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishCaptureFor resolvedSettings: AVCaptureResolvedPhotoSettings, error: Error?) {
         guard error == nil else { print("Error capturing photo: \(error!)"); return }
-        guard let rawURL = self.rawImageFileURL, let compressedData = self.compressedFileData
-            else { return }
         
         PHPhotoLibrary.requestAuthorization { status in
             guard status == .authorized else { return }
             
-            PHPhotoLibrary.shared().performChanges({
-                // Add the compressed (HEIF) data as the main resource for the Photos asset.
-                let creationRequest = PHAssetCreationRequest.forAsset()
-                creationRequest.addResource(with: .photo, data: compressedData, options: nil)
+            PHPhotoLibrary.shared().performChanges({ [weak self] in
+                guard let self = self else {
+                    return
+                }
+                
+                for (index, value) in self.rawImageFileURLList.enumerated() {
+                    guard let compressedData = self.compressedFileDataList[index], let rawURL = value else {
+                        continue
+                    }
+                    // Add the compressed (HEIF) data as the main resource for the Photos asset.
+                    let creationRequest = PHAssetCreationRequest.forAsset()
+                    creationRequest.addResource(with: .photo, data: compressedData, options: nil)
 
-                // Add the RAW (DNG) file as an altenate resource.
-                let options = PHAssetResourceCreationOptions()
-                options.shouldMoveFile = true
-                creationRequest.addResource(with: .alternatePhoto, fileURL: rawURL, options: options)
+                    // Add the RAW (DNG) file as an altenate resource.
+                    let options = PHAssetResourceCreationOptions()
+                    options.shouldMoveFile = true
+                    creationRequest.addResource(with: .alternatePhoto, fileURL: rawURL, options: options)
+                }
             }, completionHandler: self.handlePhotoLibraryError)
         }
     }
